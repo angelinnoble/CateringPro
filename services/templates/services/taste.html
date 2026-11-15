@@ -1,0 +1,402 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Experience | The Hungry Palette</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --gold: #b89564;
+            --obsidian: #0c0c0c;
+            --card-bg: #161616;
+            --text-muted: #888;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--obsidian);
+            color: #e0e0e0;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, .pkg-title, .course-title { font-family: 'Playfair Display', serif; color: #fff; }
+
+        /* Navigation */
+        .navbar { background: rgba(12, 12, 12, 0.95) !important; backdrop-filter: blur(10px); border-bottom: 1px solid rgba(184, 149, 100, 0.2); }
+        .text-gold { color: var(--gold); }
+
+        /* Hero Header */
+        .menu-header {
+            padding: 120px 0;
+            text-align: center;
+            background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url('https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?w=1600');
+            background-size: cover;
+            background-attachment: fixed;
+        }
+        .accent-gold { color: var(--gold); text-transform: uppercase; letter-spacing: 4px; font-size: 0.8rem; display: block; margin-bottom: 10px; }
+
+        /* Vibe Filter Buttons */
+        .vibe-btn {
+            background: transparent;
+            border: 1px solid rgba(184, 149, 100, 0.3);
+            color: var(--gold);
+            padding: 10px 20px;
+            margin: 5px;
+            font-size: 0.7rem;
+            letter-spacing: 2px;
+            transition: 0.4s;
+        }
+        .vibe-btn.active, .vibe-btn:hover { background: var(--gold); color: #000; }
+
+        /* Package Cards */
+        .pkg-card {
+            background: var(--card-bg);
+            border: 1px solid rgba(255,255,255,0.03);
+            padding: 40px;
+            transition: 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+            height: 100%;
+            position: relative;
+        }
+        .pkg-card:hover { transform: translateY(-10px); border-color: var(--gold); }
+        .pkg-card.glow-focus { border-color: var(--gold); box-shadow: 0 0 40px rgba(184, 149, 100, 0.3); }
+
+        .pkg-rate { font-size: 1.4rem; font-weight: 700; color: var(--gold); margin: 15px 0; }
+        .pkg-list { list-style: none; padding: 0; margin-bottom: 30px; }
+        .pkg-list li { border-bottom: 1px solid rgba(255,255,255,0.05); padding: 8px 0; font-size: 0.9rem; display: flex; justify-content: space-between; }
+        .item-count { color: var(--gold); font-weight: 600; }
+
+        .btn-talk {
+            background: transparent; border: 1px solid var(--gold); color: white; text-decoration: none;
+            display: block; text-align: center; padding: 12px; letter-spacing: 2px; font-size: 0.8rem; transition: 0.3s;
+        }
+        .btn-talk:hover { background: var(--gold); color: #000; }
+
+        /* Cinematic Slider */
+        .experience-slider-wrap {
+            background-color: #080808;
+            padding: 100px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        .swiper-slide {
+            display: flex;
+            align-items: center;
+            min-height: 550px;
+            opacity: 0 !important;
+            transition: opacity 0.8s ease-in-out;
+        }
+        .swiper-slide-active { opacity: 1 !important; }
+
+        .phase-image-container img {
+            width: 100%;
+            height: 500px;
+            object-fit: cover;
+            border: 1px solid rgba(184, 149, 100, 0.3);
+            filter: brightness(0.8) contrast(1.1);
+        }
+
+        .course-number { font-size: 0.7rem; letter-spacing: 5px; color: var(--gold); text-transform: uppercase; margin-bottom: 20px; display: block; }
+
+        /* Tables & Sections */
+        .comparison-table { background: #111; border: 1px solid rgba(184, 149, 100, 0.1); color: #fff; }
+        .tradition-section { background: #0e0e0e; padding: 100px 0; border-top: 1px solid rgba(184, 149, 100, 0.1); }
+        .editorial-text { font-size: 1.1rem; line-height: 1.9; font-weight: 300; color: #ccc; }
+
+        footer { border-top: 1px solid rgba(255,255,255,0.05); padding: 50px 0; }
+        /* Custom styling for the Flatpickr calendar */
+.flatpickr-calendar { background: #161616 !important; border: 1px solid var(--gold) !important; }
+.flatpickr-day.flatpickr-disabled {
+    color: #444 !important;
+    text-decoration: line-through;
+    cursor: not-allowed;
+}
+.flatpickr-day.fully-booked {
+    background: rgba(184, 149, 100, 0.05);
+    position: relative;
+}
+.flatpickr-day.fully-booked::after {
+    content: 'FULL';
+    font-size: 8px;
+    position: absolute;
+    bottom: 2px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: var(--gold);
+}
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand font-serif" href="/" style="letter-spacing: 2px;">
+                THE <span class="text-gold">HUNGRY</span> PALETTE
+            </a>
+            <div class="ms-auto">
+                <a href= "{% url 'taste_experience' %}" class="btn btn-outline-light rounded-0 px-4 py-2" style="font-size: 0.7rem; border-color: var(--gold); color: var(--gold);">
+                    CUSTOMIZE HERE <i class="fas fa-arrow-right ms-2"></i>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <header class="menu-header">
+        <div class="container" data-aos="fade-up">
+            <span class="accent-gold">Welcome to the feast</span>
+            <h1 class="display-3 mt-2">The Culinary Exhibits</h1>
+            <p class="lead mx-auto mt-4" style="max-width: 800px; font-weight: 300; color: #bbb;">
+                A sequence of flavors curated for the discerning palate. Select an atmosphere below to find your perfect match.
+            </p>
+
+            <div class="mt-5">
+                <button class="vibe-btn" onclick="filterVibe('standard')">INTIMATE</button>
+                <button class="vibe-btn" onclick="filterVibe('executive')">CORPORATE</button>
+                <button class="vibe-btn" onclick="filterVibe('grand')">GRAND GALA</button>
+            </div>
+        </div>
+    </header>
+
+     <section class="section-padding">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="display-5">Our Menu Packages</h2>
+            <div class="accent-gold">Tailored to your scale and style</div>
+        </div>
+
+       <div class="row g-4 justify-content-center">
+
+    <div class="col-lg-4 col-md-6" id="card-standard" data-aos="fade-up">
+        <div class="pkg-card">
+            <h3 class="pkg-title">Standard Menu</h3>
+            <div class="pkg-rate">₹400 - ₹550 <small class="text-muted" style="font-size: 0.6rem;">+ 5% GST</small></div>
+            <ul class="pkg-list">
+                <li>Welcome Drink <span class="item-count">4</span></li>
+                <li>Salads <span class="item-count">4</span></li>
+                <li>Breads <span class="item-count">2</span></li>
+                <li>Non-Veg Items <span class="item-count">1</span></li>
+                <li>Main Rice <span class="item-count">1</span></li>
+                <li>Veg Sides <span class="item-count">2</span></li>
+                <li>Desserts <span class="item-count">3</span></li>
+            </ul>
+            <p class="condition-note text-muted small">* Conditions Apply</p>
+            <a href="{% url 'menu_selection' 'standard-menu' %}" class="btn-talk">VIEW & CUSTOMIZE</a>
+        </div>
+    </div>
+
+    <div class="col-lg-4 col-md-6" id="card-classy" data-aos="fade-up" data-aos-delay="100">
+        <div class="pkg-card">
+            <h3 class="pkg-title">Classy Menu</h3>
+            <div class="pkg-rate">₹500 - ₹650 <small class="text-muted" style="font-size: 0.6rem;">+ 5% GST</small></div>
+            <ul class="pkg-list">
+                <li>Welcome Drink <span class="item-count">5</span></li>
+                <li>Starters (NV & V) <span class="item-count">2</span></li>
+                <li>Breads <span class="item-count">3</span></li>
+                <li>Non-Veg Mains <span class="item-count">2</span></li>
+                <li>Rice & Noodles <span class="item-count">2</span></li>
+                <li>Desserts <span class="item-count">4</span></li>
+            </ul>
+            <div class="badge bg-dark border border-secondary rounded-0 mb-3" style="font-size: 0.6rem;">LIVE COUNTERS AVAILABLE</div>
+            <a href="{% url 'menu_selection' 'classy-menu' %}" class="btn-talk">VIEW & CUSTOMIZE</a>
+        </div>
+    </div>
+
+    <div class="col-lg-4 col-md-6" id="card-elegant" data-aos="fade-up" data-aos-delay="200">
+        <div class="pkg-card">
+            <h3 class="pkg-title">Elegant Menu</h3>
+            <div class="pkg-rate">₹650 - ₹800 <small class="text-muted" style="font-size: 0.6rem;">+ 5% GST</small></div>
+            <ul class="pkg-list">
+                <li>Welcome Drink <span class="item-count">6</span></li>
+                <li>Salads <span class="item-count">7</span></li>
+                <li>Starters (NV & V) <span class="item-count">3</span></li>
+                <li>Breads (Live) <span class="item-count">4</span></li>
+                <li>Rice & Pulao <span class="item-count">3</span></li>
+                <li>Veg & Non-Veg <span class="item-count">6</span></li>
+                <li>Desserts (Live) <span class="item-count">5</span></li>
+            </ul>
+            <div class="badge bg-secondary rounded-0 mb-3" style="font-size: 0.6rem;">LIVE COUNTERS AVAILABLE</div>
+            <a href="{% url 'menu_selection' 'elegant-menu' %}" class="btn-talk">VIEW & CUSTOMIZE</a>
+        </div>
+    </div>
+
+    <div class="col-lg-4 col-md-6" id="card-executive" data-aos="fade-up">
+        <div class="pkg-card" style="border: 1px solid var(--gold); background: rgba(184, 149, 100, 0.05);">
+            <div class="position-absolute top-0 start-50 translate-middle bg-gold text-dark px-3 py-1 small fw-bold">MOST POPULAR</div>
+            <h3 class="pkg-title">Executive Menu</h3>
+            <div class="pkg-rate">₹800 - ₹1000 <small class="text-muted" style="font-size: 0.6rem;">+ 5% GST</small></div>
+            <ul class="pkg-list">
+                <li>Mocktails & Juice <span class="item-count">6</span></li>
+                <li>Salads (Carvings) <span class="item-count">8</span></li>
+                <li>Starters (NV & V) <span class="item-count">4</span></li>
+                <li>Soups (NV & V) <span class="item-count">3</span></li>
+                <li>Breads (Full Live) <span class="item-count">4</span></li>
+                <li>Rice & Live Pasta <span class="item-count">4</span></li>
+                <li>Desserts (Live) <span class="item-count">6</span></li>
+            </ul>
+            <div class="badge bg-gold text-dark rounded-0 mb-3" style="font-size: 0.6rem;">THEMES & LIVE COUNTERS</div>
+            <a href="{% url 'menu_selection' 'executive-menu' %}" class="btn-talk" style="background: var(--gold); color: #000;">VIEW & CUSTOMIZE</a>
+        </div>
+    </div>
+
+    <div class="col-lg-4 col-md-6" id="card-grand" data-aos="fade-up" data-aos-delay="100">
+        <div class="pkg-card" style="border-color: var(--gold);">
+            <div class="position-absolute top-0 end-0 bg-gold text-white p-1 px-3 small fw-bold">ULTIMATE</div>
+            <h3 class="pkg-title">Grand Menu</h3>
+            <div class="pkg-rate">₹1000 & above</div>
+            <ul class="pkg-list">
+                <li>Live Mojito & Mocktails <span class="item-count">Any</span></li>
+                <li>Cheese & Meat Platter <span class="item-count">Any</span></li>
+                <li>Starters (NV & V) <span class="item-count">6</span></li>
+                <li>Soups (NV & V) <span class="item-count">3</span></li>
+                <li>Breads (Live) <span class="item-count">4</span></li>
+                <li>Int'l Mains <span class="item-count">5</span></li>
+                <li>Luxury Desserts <span class="item-count">Live</span></li>
+            </ul>
+            <div class="badge bg-warning text-dark rounded-0 mb-3" style="font-size: 0.6rem;">LUXURY THEMES</div>
+            <a href="{% url 'menu_selection' 'grand-menu' %}" class="btn-talk">VIEW & CUSTOMIZE</a>
+        </div>
+    </div>
+
+</div>
+
+        </div> </div> </section>
+
+
+
+    <section class="experience-slider-wrap">
+        <div class="container" data-aos="fade-in">
+            <div class="text-center mb-5">
+                <span class="accent-gold">The Journey</span>
+                <h2 class="display-5 text-white">The Seven-Phase Sequence</h2>
+            </div>
+
+            <div class="swiper phaseSwiper">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide">
+                        <div class="row align-items-center">
+                            <div class="col-lg-7">
+                                <div class="phase-image-container">
+                                    <img src="https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=800" alt="Phase 1">
+                                </div>
+                            </div>
+                            <div class="col-lg-5 ps-lg-5">
+                                <span class="course-number">Phase 01</span>
+                                <h2 class="course-title">Welcome Drinks</h2>
+                                <p class="text-secondary lead">Refreshing seasonal elixirs designed to awaken the palate. Hand-crafted fruit infusions that set a vibrant tone.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="row align-items-center">
+                            <div class="col-lg-7">
+                                <div class="phase-image-container">
+                                    <img src="https://images.unsplash.com/photo-1544025162-d76694265947?w=800" alt="Phase 2">
+                                </div>
+                            </div>
+                            <div class="col-lg-5 ps-lg-5">
+                                <span class="course-number">Phase 02</span>
+                                <h2 class="course-title">The Starters</h2>
+                                <p class="text-secondary lead">Bite-sized delights crafted to spark excitement. Sizzling live counters that create the perfect beginning to the feast.</p>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                <div class="swiper-button-next" style="color: var(--gold);"></div>
+                <div class="swiper-button-prev" style="color: var(--gold);"></div>
+                <div class="swiper-pagination"></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="tradition-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 mb-4" data-aos="zoom-in">
+                    <img src="https://images.unsplash.com/photo-1589302168068-964664d93dc0?w=800" class="img-fluid border border-dark shadow-lg" alt="Heritage">
+                </div>
+                <div class="col-lg-6 ps-lg-5" data-aos="fade-left">
+                    <span class="accent-gold">Heritage</span>
+                    <h2 class="display-5 mb-4">The Traditional Canvas</h2>
+                    <p class="editorial-text">Authentic Kerala flavours preserved with a modern touch. We focus on clarity, comfort, and thoughtful execution of age-old recipes.</p>
+                    <a href="{% url 'taste_experience' %}" class="btn btn-outline-light rounded-0 mt-4 px-5">INQUIRE ABOUT TRADITIONS</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="text-center">
+        <div class="container">
+            <p class="accent-gold mb-2">THE HUNGRY PALETTE</p>
+            <p class="small text-muted">&copy; 2026. All Rights Reserved.</p>
+        </div>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/dark.css">
+
+    </footer>
+
+   <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+<script>
+    AOS.init({ duration: 1000, once: true });
+
+    // --- NEW: Calendar Availability Logic ---
+    document.addEventListener('DOMContentLoaded', function() {
+        // Replace '/get-booked-dates/' with your actual Django URL
+        fetch('/get-booked-dates/')
+            .then(response => response.json())
+            .then(filledDates => {
+                flatpickr("#booking-calendar", {
+                    disable: filledDates, // Array of strings like ["2026-03-25", "2026-03-28"]
+                    minDate: "today",
+                    dateFormat: "Y-m-d",
+                    locale: {
+                        firstDayOfWeek: 1
+                    },
+                    onDayCreate: function(dObj, dStr, fp, dayElem) {
+                        // Check if the date is in the filled list to add a visual hint
+                        const dateStr = dayElem.dateObj.toISOString().split('T')[0];
+                        if (filledDates.includes(dateStr)) {
+                            dayElem.classList.add("fully-booked");
+                            dayElem.title = "Date is already filled";
+                        }
+                    }
+                });
+            })
+            .catch(err => console.log("Note: Running in static mode or view not found."));
+    });
+
+    // --- Existing Slider Logic ---
+    const phaseSwiper = new Swiper('.phaseSwiper', {
+        speed: 1000,
+        loop: true,
+        effect: 'fade',
+        navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' },
+        pagination: { el: '.swiper-pagination', clickable: true },
+        autoplay: { delay: 5000 }
+    });
+
+    // --- Existing Filter Logic ---
+    function filterVibe(vibe) {
+        document.querySelectorAll('.vibe-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.pkg-card').forEach(c => c.classList.remove('glow-focus'));
+
+        const targetCard = document.getElementById('card-' + vibe);
+        if(targetCard) {
+            event.target.classList.add('active');
+            targetCard.querySelector('.pkg-card').classList.add('glow-focus');
+            targetCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    }
+</script>
+    </script>
+</body>
+</html>

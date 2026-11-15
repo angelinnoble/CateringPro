@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Receipt | The Hungry Palette</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root { --gold: #b89564; --dark: #1a1a1a; }
+        body { font-family: 'Inter', sans-serif; background-color: #f8f9fa; padding: 50px 0; }
+
+        .receipt-card {
+            background: white;
+            border: none;
+            border-radius: 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            max-width: 800px;
+            margin: auto;
+            position: relative;
+        }
+
+        /* Invoice Header */
+        .receipt-header {
+            padding: 40px;
+            border-bottom: 2px solid #f1f1f1;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand-name { font-family: 'Playfair Display', serif; color: var(--dark); font-size: 28px; }
+        .status-badge {
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        .status-paid { background: #d4edda; color: #155724; }
+
+        /* Content Sections */
+        .receipt-body { padding: 40px; }
+        .section-title { font-size: 12px; font-weight: 700; color: #aaa; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 15px; }
+
+        .item-row { display: flex; justify-content: space-between; margin-bottom: 10px; color: #444; }
+
+        /* The Big "Paid" Stamp Effect */
+        .paid-stamp {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-15deg);
+            border: 4px solid #28a745;
+            color: #28a745;
+            font-weight: 800;
+            font-size: 60px;
+            padding: 10px 30px;
+            opacity: 0.1;
+            text-transform: uppercase;
+            border-radius: 10px;
+            pointer-events: none;
+        }
+
+        .total-box {
+            background: var(--dark);
+            color: white;
+            padding: 30px;
+            margin-top: 30px;
+            border-radius: 8px;
+        }
+
+        @media print {
+            .no-print { display: none; }
+            body { background: white; padding: 0; }
+            .receipt-card { box-shadow: none; border: 1px solid #eee; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="receipt-card">
+        <div class="paid-stamp">Fully Paid</div>
+
+        <div class="receipt-header">
+            <div>
+                <div class="brand-name">THE HUNGRY PALETTE</div>
+                <p class="text-muted mb-0 small">Premium Catering & Events</p>
+            </div>
+            <div class="text-end">
+                <span class="status-badge status-paid"><i class="fas fa-check-circle me-1"></i> Confirmed</span>
+                <p class="mt-2 mb-0 small">Order #THP-{{ order.id }}</p>
+                <p class="text-muted small">Date: {{ order.created_at|date:"d M Y" }}</p>
+            </div>
+        </div>
+
+        <div class="receipt-body">
+            <div class="row mb-5">
+                <div class="col-6">
+                    <div class="section-title">Client Details</div>
+                    <h6 class="mb-1">{{ order.user.username }}</h6>
+                    <p class="text-muted small">{{ order.user.email }}</p>
+                </div>
+                <div class="col-6 text-end">
+                    <div class="section-title">Event Category</div>
+                    <h6 class="mb-0">{{ order.category.name }}</h6>
+                    <p class="text-muted small">Planned for: {{ order.event_date }}</p>
+                </div>
+            </div>
+
+            <div class="section-title">Order Breakdown</div>
+            <div class="item-row">
+                <span>Base Menu Package (Per Plate)</span>
+                <span>₹{{ order.category.base_price }}</span>
+            </div>
+
+            {% if order.extra_items.all %}
+                {% for extra in order.extra_items.all %}
+                <div class="item-row">
+                    <span>{{ extra.item_name }} (Add-on)</span>
+                    <span>₹{{ extra.extra_price }}</span>
+                </div>
+                {% endfor %}
+            {% endif %}
+
+            <div class="total-box">
+                <div class="d-flex justify-content-between mb-2">
+                    <span class="opacity-75">Subtotal</span>
+                    <span>₹{{ order.total_amount }}</span>
+                </div>
+                <div class="d-flex justify-content-between mb-2 text-success">
+                    <span class="opacity-75">Payments Received</span>
+                    <span>- ₹{{ order.total_amount }}</span>
+                </div>
+                <hr class="opacity-25">
+                <div class="d-flex justify-content-between fs-4 fw-bold">
+                    <span>BALANCE DUE</span>
+                    <span>₹0.00</span>
+                </div>
+            </div>
+
+            <div class="mt-5 text-center no-print">
+                <button onclick="window.print()" class="btn btn-outline-dark me-2">
+                    <i class="fas fa-print me-1"></i> Print Receipt
+                </button>
+                <a href="/" class="btn btn-dark" style="background: var(--gold); border: none;">
+                    Return to Dashboard
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<p class="text-center text-muted small mt-4 no-print">
+    Thank you for choosing The Hungry Palette. We look forward to serving you!
+</p>
+
+</body>
+</html>

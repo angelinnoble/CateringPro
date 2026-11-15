@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Customize Your {{ category.name }} | The Hungry Palette</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+
+    <style>
+        :root { --gold: #b89564; --dark: #1a1a1a; }
+        body { background-color: #fdfaf5; font-family: 'Inter', sans-serif; color: var(--dark); }
+        .font-serif { font-family: 'Playfair Display', serif; }
+        .text-gold { color: var(--gold); }
+        .card-custom { border: none; box-shadow: 0 15px 35px rgba(0,0,0,0.08); border-radius: 15px; }
+        .btn-gold { background: var(--gold); color: white; border: none; padding: 15px 30px; border-radius: 8px; transition: 0.3s; }
+        .btn-gold:hover { background: var(--dark); transform: translateY(-2px); }
+
+        .extra-item { cursor: pointer; border: 1px solid #e0e0e0; background: white; transition: 0.3s; border-radius: 10px; height: 100%; }
+        .extra-item:hover { border-color: var(--gold); background: #fffcf8; }
+        .extra-check:checked + .item-content { color: var(--gold); font-weight: 600; }
+
+        .form-control { border: 1px solid #ddd; padding: 12px; border-radius: 8px; }
+        .form-control:focus { border-color: var(--gold); box-shadow: none; }
+        .sticky-summary { position: sticky; top: 30px; }
+        .custom-note-box { background: #f9f4eb; border: 1px dashed var(--gold); padding: 25px; border-radius: 12px; }
+
+        .included-box { background: white; border-left: 4px solid var(--gold); padding: 15px; font-size: 0.95rem; line-height: 1.6; }
+
+        /* Smooth transition for blurring */
+        #package-content { transition: filter 0.5s ease; }
+    </style>
+</head>
+
+<body>
+
+<div id="package-content">
+    <div class="container my-5 py-4">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <div class="row">
+            <div class="col-lg-8">
+                <h1 class="font-serif display-5 mb-2">{{ category.name }}</h1>
+                <p class="text-muted text-uppercase mb-5" style="letter-spacing: 2px;">Tailor your culinary journey</p>
+
+                <h4 class="font-serif mb-4"><i class="fas fa-utensils me-2 text-gold"></i> Included in Package</h4>
+                <div class="row g-3 mb-5">
+                    {% for item in included %}
+                    <div class="col-md-6">
+                        <div class="included-box shadow-sm">
+                            <i class="fas fa-check-circle text-success me-2"></i>
+                            {{ item.item_name|linebreaksbr }}
+                        </div>
+                    </div>
+                    {% empty %}
+                    <p class="text-muted px-3">Standard inclusions will be discussed during consultation.</p>
+                    {% endfor %}
+                </div>
+
+                <form method="POST">
+                    {% csrf_token %}
+
+                    <h4 class="font-serif mb-4"><i class="fas fa-plus-circle me-2 text-gold"></i> Add Extra Delights</h4>
+                    <div class="row g-3 mb-5">
+                        {% for extra in extras %}
+                        <div class="col-md-6">
+                            <label class="extra-item p-3 d-flex justify-content-between align-items-start">
+                                <div class="d-flex">
+                                    <input type="checkbox" name="extra_items" value="{{ extra.id }}"
+                                           class="extra-check form-check-input me-3 mt-1"
+                                           data-price="{{ extra.extra_price }}">
+                                    <span class="item-content small">
+                                        {{ extra.item_name|linebreaksbr }}
+                                    </span>
+                                </div>
+                                <span class="text-gold fw-bold ms-2" style="white-space: nowrap;">+₹{{ extra.extra_price }}</span>
+                            </label>
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="custom-note-box mb-5">
+                        <h5 class="font-serif mb-2"><i class="fas fa-pen-fancy me-2 text-gold"></i> Custom Food Requests</h5>
+                        <textarea name="custom_food_notes" class="form-control" rows="4"
+                                  placeholder="e.g. Please add Russian Salad..."></textarea>
+                    </div>
+
+                    <h4 class="font-serif mb-4"><i class="fas fa-calendar-alt me-2 text-gold"></i> Event Details</h4>
+                    <div class="row g-3 mb-5">
+                        <div class="col-md-6">
+                            <label class="small fw-bold">HOST NAME</label>
+                            <input type="text" name="guest_name" class="form-control" value="{{ user.first_name }} {{ user.last_name }}" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="small fw-bold">CONTACT EMAIL</label>
+                            <input type="email" name="guest_email" class="form-control" value="{{ user.email }}" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="small fw-bold">EVENT DATE</label>
+                            <input type="date" name="event_date" id="event-date" class="form-control" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="small fw-bold">GUEST COUNT</label>
+                            <input type="number" name="guest_count" id="guest-count" class="form-control" min="1" value="50" required>
+                        </div>
+                    </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="card card-custom p-4 sticky-summary bg-white border">
+                    <h4 class="font-serif border-bottom pb-3 mb-4 text-center">Estimation Summary</h4>
+                    <div class="d-flex justify-content-between mb-2">
+                        <span class="text-muted">Base Package</span>
+                        <span class="fw-bold">₹{{ category.base_price }}</span>
+                    </div>
+                    <div class="d-flex justify-content-between mb-2">
+                        <span class="text-muted">Guest Count</span>
+                        <span class="fw-bold" id="guest-display">50</span>
+                    </div>
+                    <hr>
+                    <div class="d-flex justify-content-between mb-2 fs-5 fw-bold">
+                        <span>Total Bill</span>
+                        <span id="final-total">₹0.00</span>
+                    </div>
+                    <div class="d-flex justify-content-between text-gold mb-4 fs-6 fw-bold">
+                        <span>Advance Due (20%)</span>
+                        <span id="advance-amt">₹0.00</span>
+                    </div>
+                    <button type="submit" class="btn btn-gold w-100 py-3 fw-bold">BOOK NOW</button>
+                </div>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    const basePrice = parseFloat("{{ category.base_price }}");
+    const guestInput = document.getElementById('guest-count');
+    const guestDisplay = document.getElementById('guest-display');
+    const checkboxes = document.querySelectorAll('.extra-check');
+    const totalDisplay = document.getElementById('final-total');
+    const advanceDisplay = document.getElementById('advance-amt');
+    const eventDateInput = document.getElementById('event-date');
+
+    // Prevent past dates
+    if(eventDateInput) eventDateInput.min = new Date().toISOString().split("T")[0];
+
+    function calculateTotal() {
+        let guests = parseInt(guestInput.value) || 0;
+        guestDisplay.innerText = guests;
+
+        let perPlateExtra = 0;
+        checkboxes.forEach(box => {
+            if (box.checked) perPlateExtra += parseFloat(box.dataset.price);
+        });
+
+        let grandTotal = (basePrice + perPlateExtra) * guests;
+        let advanceAmount = grandTotal * 0.20; // Matches your 20% policy
+
+        totalDisplay.innerText = "₹" + grandTotal.toLocaleString('en-IN', {minimumFractionDigits: 2});
+        advanceDisplay.innerText = "₹" + advanceAmount.toLocaleString('en-IN', {minimumFractionDigits: 2});
+    }
+
+    guestInput.addEventListener('input', calculateTotal);
+    checkboxes.forEach(box => box.addEventListener('change', calculateTotal));
+    calculateTotal();
+
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Muse Studio | The Hungry Palette</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+
+    <style>
+        body { background-color: #121212; color: #f8f9fa; }
+        .studio-container { max-width: 900px; margin: 80px auto; padding: 20px; }
+        .muse-card {
+            background: #1a1a1a;
+            border: 1px solid rgba(184, 149, 100, 0.2);
+            padding: 50px;
+            position: relative;
+        }
+        .muse-header { text-align: center; margin-bottom: 40px; }
+        .muse-header h1 { font-style: italic; color: var(--gold); font-size: 3rem; }
+
+        .prompt-area {
+            width: 100%;
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid rgba(184, 149, 100, 0.4);
+            color: #ffffff;
+            font-size: 1.1rem;
+            padding: 15px 0;
+            margin-bottom: 30px;
+            outline: none;
+            resize: none;
+            transition: 0.3s;
+        }
+        .prompt-area:focus { border-bottom: 1px solid var(--gold); }
+
+        .suggestion-chip {
+            display: inline-block;
+            padding: 8px 15px;
+            border: 1px solid rgba(255,255,255,0.1);
+            font-size: 0.75rem;
+            margin: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .suggestion-chip:hover { border-color: var(--gold); color: var(--gold); }
+
+        /* Style for the AI Output box */
+        #museOutput {
+            color: #e5dfd5;
+            line-height: 1.8;
+            font-size: 1rem;
+            padding: 25px;
+            background: rgba(184, 149, 100, 0.03);
+            border-left: 2px solid var(--gold);
+            font-family: 'Inter', sans-serif;
+            white-space: pre-line; /* Keeps the AI's formatting clean */
+        }
+    </style>
+</head>
+<body>
+
+<div class="studio-container">
+    <div class="muse-header">
+        <h1>AI Muse Studio</h1>
+        <p class="text-muted-luxury">Design your dream event with intelligent inspiration.</p>
+    </div>
+
+    <div class="muse-card">
+        <label class="stat-label">Your Vision</label>
+        <textarea id="musePrompt" class="prompt-area" rows="3" placeholder="Describe your event (e.g. A grand wedding for 500 guests with a vintage theme...)"></textarea>
+
+        <div class="mb-4">
+            <p class="small text-muted mb-2">TRY A SUGGESTION:</p>
+            <div class="suggestion-chip" onclick="fillPrompt('Grand Wedding, 500 Guests, Royal Gold Theme, Traditional Kerala Food')">Grand Wedding</div>
+            <div class="suggestion-chip" onclick="fillPrompt('Corporate Gala, 100 Guests, Modern Minimalist, Executive Menu')">Executive Gala</div>
+            <div class="suggestion-chip" onclick="fillPrompt('Intimate Reception, 50 Guests, 90s Cinematic Vibe, Fusion Delicacies')">Intimate Fusion</div>
+        </div>
+
+        <button class="btn-luxury-outline w-100" id="generateBtn" onclick="generateInspiration()">
+            <span><i class="fas fa-wand-magic-sparkles me-2"></i>Generate Inspiration</span>
+        </button>
+
+        <div id="resultArea" class="mt-5 pt-5 border-top border-secondary" style="display: none;">
+            <h4 class="font-serif italic mb-4" style="color: var(--gold);">The Muse Suggests...</h4>
+            <div id="museOutput" class="text-secondary leading-relaxed">
+                </div>
+        </div>
+    </div>
+
+    <div class="text-center mt-4">
+        <a href="{% url 'home' %}" class="text-muted small text-decoration-none"><i class="fas fa-arrow-left me-2"></i>Back to Home</a>
+    </div>
+</div>
+
+<script>
+    function fillPrompt(text) {
+        document.getElementById('musePrompt').value = text;
+    }
+
+    function generateInspiration() {
+        const promptInput = document.getElementById('musePrompt');
+        const resultArea = document.getElementById('resultArea');
+        const output = document.getElementById('museOutput');
+        const btn = document.getElementById('generateBtn');
+
+        if (!promptInput.value.trim()) {
+            alert("Please share a vision with the Muse first.");
+            return;
+        }
+
+        // Show loading state
+        resultArea.style.display = 'block';
+        output.innerHTML = "<i class='fas fa-spinner fa-spin me-2'></i> Consulting the Muse...";
+        btn.disabled = true;
+
+        // AJAX request to your existing 'ai_planner' view
+        fetch("{% url 'ai_planner' %}", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+                "X-CSRFToken": "{{ csrf_token }}"
+            },
+            body: "prompt=" + encodeURIComponent(promptInput.value)
+        })
+        .then(response => response.json())
+        .then(data => {
+            btn.disabled = false;
+            if (data.suggestion) {
+                // Use the 'suggestion' key from your views.py
+                output.innerHTML = data.suggestion;
+            } else if (data.error) {
+                output.innerHTML = "The Muse is silent: " + data.error;
+            }
+        })
+        .catch(error => {
+            btn.disabled = false;
+            output.innerHTML = "Connection lost. Please try again.";
+            console.error('Error:', error);
+        });
+
+        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+    }
+</script>
+
+</body>
+</html>

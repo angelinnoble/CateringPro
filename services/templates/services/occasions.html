@@ -1,0 +1,158 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Occasions | The Hungry Palette</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root { --gold: #b89564; --dark: #1a1a1a; --soft-bg: #fdfaf5; }
+        body { font-family: 'Inter', sans-serif; background-color: #fff; overflow-x: hidden; }
+        h1, h2, h3, .occ-title { font-family: 'Playfair Display', serif; }
+
+        /* Header */
+        .occ-header { background: var(--dark); color: white; padding: 100px 0; text-align: center; }
+        .accent { color: var(--gold); text-transform: uppercase; letter-spacing: 3px; font-size: 0.9rem; }
+
+        /* Occasion Cards */
+        .occ-card {
+            border: none;
+            background: var(--soft-bg);
+            border-radius: 15px;
+            padding: 40px;
+            height: 100%;
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .occ-card:hover { transform: translateY(-10px); box-shadow: 0 20px 40px rgba(0,0,0,0.05); background: #fff; border: 1px solid var(--gold); }
+        .occ-icon { font-size: 2.5rem; color: var(--gold); margin-bottom: 20px; }
+
+        .list-unstyled li { padding: 8px 0; border-bottom: 1px solid rgba(0,0,0,0.05); transition: 0.3s; }
+        .list-unstyled li:hover { color: var(--gold); padding-left: 10px; }
+        .list-unstyled li:last-child { border: none; }
+
+        .btn-talk { border: 1px solid var(--dark); color: var(--dark); text-decoration: none; padding: 12px 30px; letter-spacing: 1px; transition: 0.3s; display: inline-block; margin-top: 20px; }
+        .btn-talk:hover { background: var(--dark); color: white; }
+
+        /* Smooth Transition */
+        .fade-in { animation: fadeIn 1s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+
+<header class="occ-header">
+    <div class="container fade-in">
+        <span class="accent">Every Moment Matters</span>
+        <h1 class="display-3 mt-3">Curated Occasions</h1>
+        <p class="lead mx-auto mt-4" style="max-width: 700px; opacity: 0.8;">
+            From the intimacy of a housewarming to the grandeur of a destination wedding,
+            <strong>The Hungry Palette</strong> brings world-class catering to every milestone.
+        </p>
+    </div>
+</header>
+
+<div class="container py-5 mt-5">
+    <div class="row g-4">
+
+        <div class="col-lg-6 col-md-12">
+            <div class="occ-card">
+                <div class="row align-items-center">
+                    <div class="col-md-6">
+                        <div class="occ-icon"><i class="fas fa-heart"></i></div>
+                        <h2 class="occ-title">Weddings & Betrothals</h2>
+                        <ul class="list-unstyled">
+                            <li>Traditional Wedding Ceremonies</li>
+                            <li>Unconventional Weddings</li>
+                            <li>Pre-Wedding Events (Mehndi)</li>
+                            <li>Bachelor / Bachelorette Parties</li>
+                            <li>Destination Weddings</li>
+                            <li>Betrothal Ceremonies</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <img src="{% static 'services/images/wedding-card.jpg' %}" class="img-fluid rounded shadow-sm" alt="Weddings">
+                    </div>
+                </div>
+                <a href="{% url 'home' %}#contact" class="btn-talk">DISCUSS YOUR BIG DAY</a>
+            </div>
+        </div>
+
+        <div class="col-lg-6 col-md-12">
+            <div class="occ-card">
+                <div class="row align-items-center">
+                    <div class="col-md-6">
+                        <div class="occ-icon"><i class="fas fa-om"></i></div>
+                        <h2 class="occ-title">Cultural & Religious</h2>
+                        <ul class="list-unstyled">
+                            <li>House Warming (Grahapravesham)</li>
+                            <li>Baptism & Holy Communion</li>
+                            <li>Onam & Vishu Celebrations</li>
+                            <li>Christmas, Eid & Easter</li>
+                            <li>Community Gatherings</li>
+                            <li>Memorial Services</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <img src="{% static 'services/images/cultural-card.jpg' %}" class="img-fluid rounded shadow-sm" alt="Cultural">
+                    </div>
+                </div>
+                <a href="{% url 'home' %}#contact" class="btn-talk">PLAN A FESTIVITY</a>
+            </div>
+        </div>
+
+        <div class="col-lg-6 col-md-12">
+            <div class="occ-card">
+                <div class="row align-items-center">
+                    <div class="col-md-6">
+                        <div class="occ-icon"><i class="fas fa-users"></i></div>
+                        <h2 class="occ-title">Family Gatherings</h2>
+                        <ul class="list-unstyled">
+                            <li>Birthday Parties</li>
+                            <li>Anniversary Celebrations</li>
+                            <li>Baby Showers</li>
+                            <li>Reunions & Retirement</li>
+                            <li>Funeral Receptions</li>
+                            <li>Family Get-togethers</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <img src="{% static 'services/images/family-card.jpg' %}" class="img-fluid rounded shadow-sm" alt="Family">
+                    </div>
+                </div>
+                <a href="{% url 'home' %}#contact" class="btn-talk">BOOK A GATHERING</a>
+            </div>
+        </div>
+
+        <div class="col-lg-6 col-md-12">
+            <div class="occ-card">
+                <div class="row align-items-center">
+                    <div class="col-md-6">
+                        <div class="occ-icon"><i class="fas fa-building"></i></div>
+                        <h2 class="occ-title">Corporate & Public</h2>
+                        <ul class="list-unstyled">
+                            <li>Product Launches</li>
+                            <li>Office Parties & Awards</li>
+                            <li>Annual Day Celebrations</li>
+                            <li>Conferences & Seminars</li>
+                            <li>Food Festivals</li>
+                            <li>Charity Fundraisers</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <img src="{% static 'services/images/corp-card.jpg' %}" class="img-fluid rounded shadow-sm" alt="Corporate">
+                    </div>
+                </div>
+                <a href="{% url 'home' %}#contact" class="btn-talk">REQUEST A QUOTE</a>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<footer class="py-5 text-center bg-dark text-white mt-5">
+    <p class="mb-0 small opacity-50">THE HUNGRY PALETTE &copy; 2026</p>
+</footer>
+
+</body>
+</html>

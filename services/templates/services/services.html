@@ -1,0 +1,188 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Our Services | The Hungry Palette</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root { --gold: #b89564; --dark: #1a1a1a; --light-bg: #f8f9fa; }
+        body { font-family: 'Inter', sans-serif; color: #333; }
+        h1, h2, h3, .service-header { font-family: 'Playfair Display', serif; }
+
+        .hero-section { background: var(--dark); color: white; padding: 100px 0; text-align: center; }
+        .accent { color: var(--gold); text-transform: uppercase; letter-spacing: 2px; font-weight: 600; font-size: 0.9rem; }
+
+        /* Stats Bar */
+        .stats-bar { background: white; margin-top: -50px; border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); padding: 40px; }
+        .stat-item { border-right: 1px solid #eee; }
+        .stat-item:last-child { border-right: none; }
+
+        /* Service Cards */
+        .service-box { padding: 30px; border: 1px solid #eee; transition: 0.3s; height: 100%; background: #fff; }
+        .service-box:hover { border-color: var(--gold); transform: translateY(-5px); }
+        .service-box i { font-size: 2.5rem; color: var(--gold); margin-bottom: 20px; }
+
+        /* Wedding Section */
+        .wedding-section { background: var(--light-bg); padding: 80px 0; }
+        .img-stack { position: relative; }
+        .img-stack img { border-radius: 10px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); }
+
+        .why-harvest-icon { width: 60px; height: 60px; line-height: 60px; background: var(--dark); color: white; border-radius: 50%; display: inline-block; margin-bottom: 15px; text-align: center; }
+    </style>
+</head>
+<body>
+
+<section class="hero-section">
+    <div class="container">
+        <span class="accent">Crafting Culinary Experiences</span>
+        <h1 class="display-3 mt-3">Our Services</h1>
+        <p class="lead mt-4 mx-auto" style="max-width: 800px; opacity: 0.8;">At <strong>The Hungry Palette</strong>, we transform every event into a memorable celebration. From intimate gatherings to grand celebrations, we bring expertise, creativity, and attention to detail to every plate.</p>
+    </div>
+</section>
+
+<div class="container">
+    <div class="stats-bar text-center">
+        <div class="row">
+            <div class="col-md-3 stat-item">
+                <h4 class="fw-bold">50 - 50,000</h4>
+                <p class="small text-muted mb-0">Guest Capacity</p>
+            </div>
+            <div class="col-md-3 stat-item">
+                <h4 class="fw-bold">₹500 - ₹5,000+</h4>
+                <p class="small text-muted mb-0">Flexible Budgets</p>
+            </div>
+            <div class="col-md-3 stat-item">
+                <h4 class="fw-bold">South India</h4>
+                <p class="small text-muted mb-0">Comprehensive Coverage</p>
+            </div>
+            <div class="col-md-3 stat-item">
+                <h4 class="fw-bold">Multi-Cuisine</h4>
+                <p class="small text-muted mb-0">Veg & Non-Veg Expertise</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="py-5 mt-5">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="service-box">
+                    <i class="fas fa-briefcase"></i>
+                    <h3>Corporate Events</h3>
+                    <p class="text-secondary">From business luncheons to annual celebrations, we provide seamless service and tailored menus to impress colleagues and clients.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="service-box">
+                    <i class="fas fa-birthday-cake"></i>
+                    <h3>Private Parties</h3>
+                    <p class="text-secondary">Celebrate milestones like birthdays and anniversaries with impeccable catering for your cherished moments.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="service-box">
+                    <i class="fas fa-fire"></i>
+                    <h3>Live Cooking</h3>
+                    <p class="text-secondary">Engage guests with interactive stations featuring freshly prepared dishes by our skilled chefs.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="service-box">
+                    <i class="fas fa-tree"></i>
+                    <h3>Outdoor Catering</h3>
+                    <p class="text-secondary">Take your event outdoors with services designed for any remote location or scenic setting.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="service-box">
+                    <i class="fas fa-globe"></i>
+                    <h3>Multi-Cuisine</h3>
+                    <p class="text-secondary">Indulge in Indian, Continental, Mediterranean, Asian, Italian, Arabic and more.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="service-box">
+                    <i class="fas fa-leaf"></i>
+                    <h3>Dietary Customization</h3>
+                    <p class="text-secondary">Menus tailored for vegan, gluten-free, Jain, and allergen-free preferences with zero compromise on taste.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="wedding-section">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <span class="accent">Your Big Day, Perfectly Served</span>
+                <h2 class="display-5 mb-4">Wedding Catering</h2>
+                <p>A wedding is more than an event—it’s a celebration of culture and tradition. At <strong>The Hungry Palette</strong>, we specialize in bespoke wedding menus that reflect your unique story.</p>
+
+                <div class="row mt-4">
+                    <div class="col-sm-6 mb-3">
+                        <h6 class="fw-bold"><i class="fas fa-utensils me-2 text-gold"></i> Personalized Menus</h6>
+                        <p class="small text-muted">Tailored to your taste and dietary requirements.</p>
+                    </div>
+                    <div class="col-sm-6 mb-3">
+                        <h6 class="fw-bold"><i class="fas fa-om me-2 text-gold"></i> Cultural Expertise</h6>
+                        <p class="small text-muted">From traditional South Indian feasts to global fusion spread.</p>
+                    </div>
+                    <div class="col-sm-6 mb-3">
+                        <h6 class="fw-bold"><i class="fas fa-star me-2 text-gold"></i> Elegant Presentation</h6>
+                        <p class="small text-muted">Thematic setups that enhance your wedding’s aesthetic.</p>
+                    </div>
+                    <div class="col-sm-6 mb-3">
+                        <h6 class="fw-bold"><i class="fas fa-check-double me-2 text-gold"></i> Seamless Service</h6>
+                        <p class="small text-muted">Flawless execution from initial handshake to the final course.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-5 offset-lg-1">
+                <img src="{% static 'services/images/wedding-service.jpg' %}" class="img-fluid" alt="Wedding Catering">
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-5">
+    <div class="container text-center py-5">
+        <h2 class="mb-5">Why Choose The Hungry Palette?</h2>
+        <div class="row">
+            <div class="col-md-3">
+                <div class="why-harvest-icon"><i class="fas fa-award"></i></div>
+                <h5>Unmatched Quality</h5>
+                <p class="small">Fresh ingredients and hygienic preparation.</p>
+            </div>
+            <div class="col-md-3">
+                <div class="why-harvest-icon"><i class="fas fa-users"></i></div>
+                <h5>Professional Team</h5>
+                <p class="small">Over 300+ dedicated staff for excellence.</p>
+            </div>
+            <div class="col-md-3">
+                <div class="why-harvest-icon"><i class="fas fa-sliders-h"></i></div>
+                <h5>Personalized Service</h5>
+                <p class="small">Experiences tailored to your event requirements.</p>
+            </div>
+            <div class="col-md-3">
+                <div class="why-harvest-icon"><i class="fas fa-map-marked-alt"></i></div>
+                <h5>Full Coverage</h5>
+                <p class="small">Serving all of South India from four branches.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="bg-dark text-white py-5 text-center">
+    <div class="container py-4">
+        <h2>Your Event, Our Expertise</h2>
+        <p class="lead mb-4">Let us bring your vision to life with world-class catering that leaves a lasting impression.</p>
+        <a href="{% url 'home' %}#contact" class="btn btn-outline-light px-5 py-3 rounded-pill">GET A FREE QUOTE</a>
+    </div>
+</section>
+
+</body>
+</html>

@@ -1,0 +1,294 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Philosophy | The Hungry Palette</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" />
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+
+    <style>
+        :root {
+            --obsidian: #121212;
+            --card-bg: #1a1a1a;
+            --gold: #b89564;
+            --text-grey: #cccccc;
+        }
+
+        body {
+            background-color: var(--obsidian);
+            font-family: 'Inter', sans-serif;
+            color: var(--text-grey);
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h5 { font-family: 'Playfair Display', serif; color: #ffffff; }
+
+        .section-title {
+            font-size: 3.5rem;
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        /* Obsidian Glass Card */
+        .glass-card {
+            background: var(--card-bg);
+            border: 1px solid rgba(184, 149, 100, 0.2);
+            padding: 45px;
+            transition: all 0.5s ease;
+            height: 100%;
+        }
+
+        .glass-card:hover {
+            border-color: var(--gold);
+            transform: translateY(-5px);
+        }
+
+        .accent-gold {
+            color: var(--gold);
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            display: block;
+            margin-bottom: 15px;
+        }
+
+        /* Timeline Styling */
+        .timeline-container {
+            position: relative;
+            padding: 50px 0;
+        }
+        .timeline-line {
+            position: absolute;
+            left: 50%;
+            width: 1px;
+            height: 100%;
+            background: rgba(184, 149, 100, 0.3);
+        }
+        .timeline-item {
+            margin-bottom: 40px;
+            width: 50%;
+            padding: 20px 40px;
+            position: relative;
+        }
+        .timeline-item.left { text-align: right; left: 0; }
+        .timeline-item.right { text-align: left; left: 50%; }
+
+        .timeline-dot {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: var(--gold);
+            border-radius: 50%;
+            top: 30px;
+        }
+        .left .timeline-dot { right: -5px; }
+        .right .timeline-dot { left: -5px; }
+
+        /* Sourcing Map Icons */
+        .source-icon {
+            font-size: 2rem;
+            color: var(--gold);
+            margin-bottom: 15px;
+        }
+
+        /* AI Muse Promo Box */
+        .muse-promo {
+            background: linear-gradient(135deg, #1a1a1a 0%, #000000 100%);
+            border: 1px solid var(--gold);
+            padding: 60px;
+            text-align: center;
+        }
+
+        footer {
+            background: #0a0a0a;
+            padding: 80px 0 30px 0;
+            border-top: 1px solid rgba(184, 149, 100, 0.1);
+        }
+        /* Navigation Styling */
+.studio-nav {
+    background-color: rgba(18, 18, 18, 0.95);
+    backdrop-filter: blur(10px); /* Modern frosted glass effect */
+    border-bottom: 1px solid rgba(184, 149, 100, 0.1);
+    padding: 20px 0;
+}
+
+.navbar-brand {
+    font-size: 1.5rem;
+    letter-spacing: 2px;
+    font-weight: 700;
+}
+
+.nav-link {
+    color: #ffffff !important;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 2px;
+    margin: 0 15px;
+    transition: 0.3s;
+}
+
+.nav-link:hover, .nav-link.active {
+    color: var(--gold) !important;
+}
+
+
+/* Call to Action Button */
+.btn-nav-gold {
+    background: transparent;
+    color: var(--gold);
+    border: 1px solid var(--gold);
+    padding: 8px 20px;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-decoration: none;
+    transition: 0.4s;
+}
+
+.btn-nav-gold:hover {
+    background: var(--gold);
+    color: #000;
+}
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark sticky-top studio-nav">
+    <div class="container">
+        <a class="navbar-brand font-serif" href="{% url 'home' %}">
+            THE HUNGRY <span style="color: var(--gold);">PALETTE</span>
+        </a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto align-items-center">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'home' %}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="#">Philosophy</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'ai_muse' %}" style="position: relative;">
+                        AI Muse <span class="badge-gold"></span>
+                    </a>
+                </li>
+                <li class="nav-item ms-lg-4">
+                    <a class="btn-nav-gold" href="{% url 'contact_page' %}">Book Now</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="container py-5">
+    <div class="text-center mb-5" data-aos="fade-up">
+        <span class="accent-gold">Our Legacy</span>
+        <h1 class="section-title">The Culinary Philosophy</h1>
+    </div>
+
+    <div class="timeline-container mb-5" data-aos="fade-up">
+        <div class="timeline-line d-none d-md-block"></div>
+
+        <div class="timeline-item left">
+            <div class="timeline-dot"></div>
+            <h4 class="text-white">2003</h4>
+            <p class="small">The first flame is lit in Marangattupilly. A tradition begins.</p>
+        </div>
+
+        <div class="timeline-item right">
+            <div class="timeline-dot"></div>
+            <h4 class="text-white">2005</h4>
+            <p class="small">Our first 'Grand Wedding' with 1,000+ guests. Perfection achieved.</p>
+        </div>
+
+        <div class="timeline-item left">
+            <div class="timeline-dot"></div>
+            <h4 class="text-white">2020</h4>
+            <p class="small">1 Lakh+ servings milestone. Trusted by families across Kerala.</p>
+        </div>
+    </div>
+
+    <div class="row g-4 mb-5">
+        <div class="col-lg-6" data-aos="fade-right">
+            <div class="glass-card">
+                <span class="accent-gold">Vision</span>
+                <h2>The Aspiration</h2>
+                <p>To be South India’s most trusted catering partner, delivering unparalleled service and concepts that exceed every client’s expectation.</p>
+            </div>
+        </div>
+        <div class="col-lg-6" data-aos="fade-left">
+            <div class="glass-card">
+                <span class="accent-gold">Mission</span>
+                <h2>The Promise</h2>
+                <div class="d-flex mt-3">
+                    <div class="me-4"><i class="fas fa-gem text-gold"></i><br>Quality</div>
+                    <div><i class="fas fa-lightbulb text-gold"></i><br>Creativity</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h2 class="text-center mb-5 font-serif" data-aos="fade-up">Farm-to-Palette</h2>
+    <div class="row g-4 mb-5 text-center">
+        <div class="col-md-4" data-aos="zoom-in">
+            <div class="glass-card">
+                <i class="fas fa-leaf source-icon"></i>
+                <h5 class="text-white">Local Farms</h5>
+                <p class="small">Vegetables sourced daily from organic Marangattupilly growers.</p>
+            </div>
+        </div>
+        <div class="col-md-4" data-aos="zoom-in" data-aos-delay="100">
+            <div class="glass-card">
+                <i class="fas fa-mortar-pestle source-icon"></i>
+                <h5 class="text-white">Pure Spices</h5>
+                <p class="small">Hand-picked, stone-ground spices from the heart of Munnar.</p>
+            </div>
+        </div>
+        <div class="col-md-4" data-aos="zoom-in" data-aos-delay="200">
+            <div class="glass-card">
+                <i class="fas fa-tractor source-icon"></i>
+                <h5 class="text-white">Ethical Sourcing</h5>
+                <p class="small">Supporting local sustainable agriculture with every plate.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="muse-promo mb-5" data-aos="flip-up">
+        <span class="accent-gold">Exclusive Feature</span>
+        <h2 class="mb-4">The Muse Signature</h2>
+        <p class="mb-4">Most caterers offer a menu. We offer a vision. Use our AI Muse to design your theme and culinary flow in real-time.</p>
+        <a href="{% url 'ai_muse' %}" class="btn-luxury-outline"><span>Consult the AI Muse</span></a>
+    </div>
+
+</div>
+
+<footer>
+    <div class="container text-center">
+        <h2 class="font-serif italic text-white mb-4">The Hungry Palette</h2>
+        <p class="small text-muted mb-4">Crafting Memories Since 2003.</p>
+        <div class="d-flex justify-content-center gap-4 mb-5">
+            <a href="#" class="text-gold"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="text-gold"><i class="fab fa-facebook"></i></a>
+            <a href="#" class="text-gold"><i class="fab fa-whatsapp"></i></a>
+        </div>
+        <hr style="border-color: rgba(184, 149, 100, 0.1);">
+        <p class="small" style="font-size: 0.6rem; letter-spacing: 2px;">© 2026 THE HUNGRY PALETTE | ALL RIGHTS RESERVED</p>
+    </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+<script>
+    AOS.init({ duration: 1000, once: true });
+</script>
+
+</body>
+</html>

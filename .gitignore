@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.py[cod]
+
+# Virtual environments
+.venv/
+venv/
+
+# PyCharm
+.idea/
+
+# Database
+db.sqlite3
+
+# Private environment files
+.env
+.env.*
+
+# Uploaded media
+media/
+
+# Logs
+*.log

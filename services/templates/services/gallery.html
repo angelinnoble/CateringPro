@@ -1,0 +1,230 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gallery | The Hungry Palette</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css"/>
+
+    <style>
+        :root {
+            --gold: #b89564;
+            --obsidian: #121212;
+            --card-bg: #1a1a1a;
+            --text-grey: #cccccc;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--obsidian);
+            color: var(--text-grey);
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        /* Header - Deep Obsidian Style */
+        .header-box {
+            padding: 120px 20px;
+            text-align: center;
+            background: var(--card-bg);
+            margin-bottom: 60px;
+            border-bottom: 1px solid rgba(184, 149, 100, 0.2);
+        }
+        .header-content h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            color: #ffffff;
+            letter-spacing: 2px;
+        }
+        .header-content span {
+            letter-spacing: 5px;
+            color: var(--gold);
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        /* Filter Controls */
+        .filter-group { text-align: center; margin-bottom: 50px; }
+        .filter-btn {
+            background: none;
+            border: none;
+            padding: 10px 25px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-size: 12px;
+            cursor: pointer;
+            color: #777;
+            transition: 0.3s;
+        }
+        .filter-btn:hover { color: #ffffff; }
+        .filter-btn.active {
+            color: var(--gold);
+            border-bottom: 2px solid var(--gold);
+        }
+
+        /* Grid Setup */
+        .grid-item { width: 33.333%; padding: 12px; }
+        @media(max-width: 992px) { .grid-item { width: 50%; } }
+        @media(max-width: 768px) { .grid-item { width: 100%; } }
+
+        .portfolio-wrap {
+            position: relative;
+            overflow: hidden;
+            background: #000;
+            border: 1px solid rgba(184, 149, 100, 0.1);
+            transition: 0.4s;
+        }
+
+        /* Media Optimization */
+        .portfolio-wrap img, .portfolio-wrap video {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            transition: 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            display: block;
+            filter: grayscale(30%);
+        }
+
+        .portfolio-wrap:hover img, .portfolio-wrap:hover video {
+            transform: scale(1.08);
+            filter: grayscale(0%);
+        }
+
+        .portfolio-info {
+            position: absolute; bottom: 0; left: 0; width: 100%; padding: 30px;
+            background: linear-gradient(transparent, rgba(18, 18, 18, 0.95));
+            color: white; opacity: 0; transition: 0.4s; z-index: 2;
+        }
+        .portfolio-wrap:hover .portfolio-info { opacity: 1; }
+        .portfolio-info h6 { font-family: 'Playfair Display', serif; font-size: 1.2rem; margin-top: 5px; color: #fff; }
+
+        /* Footer */
+        footer {
+            background: var(--obsidian);
+            border-top: 1px solid rgba(184, 149, 100, 0.2);
+            padding: 80px 0 40px;
+            margin-top: 100px;
+        }
+        .footer-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+            margin-bottom: 15px;
+            color: var(--gold);
+            letter-spacing: 2px;
+        }
+
+        .whatsapp-float {
+            position: fixed; width: 60px; height: 60px; bottom: 25px; right: 25px;
+            background: #25D366; color: #fff; border-radius: 50%; text-align: center;
+            font-size: 28px; box-shadow: 0 6px 20px rgba(0,0,0,0.4); z-index: 100;
+        }
+        .whatsapp-float i { line-height: 60px; }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    <div class="header-box">
+        <div class="header-content">
+            <span class="small">Our Portfolio</span>
+            <h1>The Visual Palette</h1>
+        </div>
+    </div>
+
+    <div class="filter-group">
+        <button class="filter-btn active" data-filter="*">All Collections</button>
+        <button class="filter-btn" data-filter=".wedding">Weddings</button>
+        <button class="filter-btn" data-filter=".corporate">Corporate</button>
+        <button class="filter-btn" data-filter=".cultural">Cultural</button>
+        <button class="filter-btn" data-filter=".private-parties">Private Events</button>
+    </div>
+
+    <div class="row grid">
+        {% for item in items %}
+        <div class="grid-item {{ item.category|slugify }}">
+            <div class="portfolio-wrap">
+                {% if item.media_type == 'Video' and item.video_file %}
+                    <a href="{{ item.video_file.url }}" class="glightbox" data-gallery="gallery1">
+                        <video muted loop playsinline preload="metadata" class="gallery-video">
+                            <source src="{{ item.video_file.url }}" type="video/mp4">
+                        </video>
+                    </a>
+                {% elif item.image_file %}
+                    <a href="{{ item.image_file.url }}" class="glightbox" data-gallery="gallery1">
+                        <img src="{{ item.image_file.url }}" alt="{{ item.title }}" loading="lazy">
+                    </a>
+                {% else %}
+                    <div class="p-5 text-center text-muted">Awaiting Media</div>
+                {% endif %}
+
+                <div class="portfolio-info">
+                    <small style="color: var(--gold); letter-spacing: 2px; font-weight: 600;">{{ item.category|upper }}</small>
+                    <h6 class="mb-0">{{ item.title }}</h6>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<footer>
+    <div class="container text-center">
+        <div class="footer-title">THE HUNGRY PALETTE</div>
+        <p class="small opacity-50">PREMIUM CATERING CRAFTED WITH ELEGANCE AND TASTE.</p>
+        <div class="mt-4 small opacity-25">© 2026 THE HUNGRY PALETTE. MARANGATTUPILLY, KERALA.</div>
+    </div>
+</footer>
+
+<a href="https://wa.me/919876543210" target="_blank" class="whatsapp-float"><i class="fab fa-whatsapp"></i></a>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://unpkg.com/isotope-layout@3/dist/isotope.pkgd.min.js"></script>
+<script src="https://unpkg.com/imagesloaded@5/imagesloaded.pkgd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/glightbox/dist/js/glightbox.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+        // Initialize Isotope with Masonry
+        var $grid = $('.grid').isotope({
+            itemSelector: '.grid-item',
+            percentPosition: true,
+            masonry: { columnWidth: '.grid-item' }
+        });
+
+        // Relayout as images load to prevent overlapping
+        $grid.imagesLoaded().progress( function() {
+            $grid.isotope('layout');
+        });
+
+        // Filter Logic
+        $('.filter-btn').on('click', function(){
+            var filterValue = $(this).attr('data-filter');
+            $grid.isotope({ filter: filterValue });
+            $('.filter-btn').removeClass('active');
+            $(this).addClass('active');
+        });
+
+        // Luxury Video Interaction: Play on Hover
+        $(document).on('mouseenter', '.gallery-video', function() {
+            this.play();
+        }).on('mouseleave', '.gallery-video', function() {
+            this.pause();
+        });
+
+        // Initialize Lightbox for full-screen viewing
+        const lightbox = GLightbox({
+            selector: '.glightbox',
+            touchNavigation: true,
+            loop: true
+        });
+    });
+</script>
+
+</body>
+</html>

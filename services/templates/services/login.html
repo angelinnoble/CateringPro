@@ -1,0 +1,236 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | The Hungry Palette</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" />
+
+    <style>
+        :root {
+            --gold: #b89564;
+            --midnight: #121212;
+            --cream: #fdfaf5;
+            --error: #c53030;
+        }
+
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            background-color: var(--midnight);
+            overflow: hidden;
+        }
+
+        .login-wrapper {
+            display: flex;
+            height: 100vh;
+            width: 100%;
+        }
+
+        .login-visual {
+            flex: 1.2;
+            position: relative;
+            background: linear-gradient(rgba(18, 18, 18, 0.4), rgba(18, 18, 18, 0.4)),
+                        url('https://images.unsplash.com/photo-1550966841-3ee4ad6c10d4?q=80&w=2070') center/cover;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            padding: 60px;
+        }
+
+        @media (min-width: 992px) { .login-visual { display: flex; } }
+
+        .visual-content h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 4rem;
+            margin-bottom: 20px;
+            line-height: 1.1;
+        }
+
+        .login-form-side {
+            flex: 1;
+            background-color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            position: relative;
+        }
+
+        .form-container {
+            width: 100%;
+            max-width: 400px;
+            animation: fadeIn 1s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateX(20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .brand-logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            color: var(--midnight);
+            text-decoration: none;
+            display: block;
+            margin-bottom: 40px;
+            letter-spacing: 2px;
+        }
+
+        .form-header h2 { font-family: 'Playfair Display', serif; font-size: 2.2rem; margin-bottom: 10px; }
+        .form-header p { color: #888; font-size: 0.9rem; margin-bottom: 40px; text-transform: uppercase; letter-spacing: 2px; }
+
+        /* Modern Inputs with Floating Labels */
+        .input-group-custom {
+            position: relative;
+            margin-bottom: 30px;
+        }
+
+        .input-group-custom input {
+            width: 100%;
+            padding: 15px 0;
+            font-size: 1rem;
+            color: var(--midnight);
+            border: none;
+            border-bottom: 1px solid #e0e0e0;
+            outline: none;
+            background: transparent;
+            transition: 0.3s;
+        }
+
+        .input-group-custom label {
+            position: absolute;
+            top: 15px;
+            left: 0;
+            color: #aaa;
+            pointer-events: none;
+            transition: 0.3s;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Logic for floating label when focused or contains text */
+        .input-group-custom input:focus ~ label,
+        .input-group-custom input:not(:placeholder-shown) ~ label {
+            top: -10px;
+            font-size: 0.7rem;
+            color: var(--gold);
+            font-weight: 600;
+        }
+
+        .input-group-custom input:focus { border-bottom: 1px solid var(--gold); }
+
+        .btn-signin {
+            width: 100%;
+            padding: 18px;
+            background: var(--midnight);
+            color: white;
+            border: none;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: 0.4s;
+            margin-top: 10px;
+        }
+
+        .btn-signin:hover { background: var(--gold); letter-spacing: 5px; }
+
+        .alert-custom {
+            padding: 15px;
+            font-size: 0.85rem;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-left: 4px solid var(--error);
+            background: #fff5f5;
+            color: var(--error);
+        }
+
+        .footer-links { margin-top: 40px; font-size: 0.85rem; color: #666; text-align: center; }
+        .footer-links a { color: var(--midnight); text-decoration: none; font-weight: 600; border-bottom: 1px solid var(--gold); }
+
+        .btn-back {
+            position: absolute;
+            top: 40px;
+            right: 40px;
+            color: var(--midnight);
+            text-decoration: none;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="login-wrapper">
+        <div class="login-visual">
+            <div class="visual-content" data-aos="fade-right">
+                <p>Est. 2003</p>
+                <h1>Reserved for the <br><em>Extraordinary.</em></h1>
+                <p>Welcome to The Hungry Palette. Your journey into curated culinary excellence starts here.</p>
+            </div>
+        </div>
+
+        <div class="login-form-side">
+            <a href="/" class="btn-back"><i class="fas fa-arrow-left me-2"></i> Back to Site</a>
+
+            <div class="form-container">
+                <a href="/" class="brand-logo">THE HUNGRY PALETTE</a>
+
+                <div class="form-header">
+                    <h2>Welcome Back</h2>
+                    <p>Enter your credentials</p>
+                </div>
+
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert-custom">
+                            <i class="fas fa-exclamation-circle"></i>
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
+                <form method="POST" action="{{ request.get_full_path }}">
+                    {% csrf_token %}
+
+                    <input type="hidden" name="next" value="{{ next }}">
+
+                    <div class="input-group-custom">
+                        <input type="text" name="un" id="un" placeholder=" " required autocomplete="username">
+                        <label for="un">Username</label>
+                    </div>
+
+                    <div class="input-group-custom">
+                        <input type="password" name="psw" id="psw" placeholder=" " required autocomplete="current-password">
+                        <label for="psw">Password</label>
+                    </div>
+
+                    <button type="submit" class="btn-signin">Sign In</button>
+                </form>
+
+                <div class="footer-links">
+                    <p>New to the family? <a href="/pp/">Create Account</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script>
+        AOS.init({ duration: 1200 });
+    </script>
+</body>
+</html>
